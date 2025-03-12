@@ -38,4 +38,11 @@ class EmailMinimumLengthValidatorImplTest {
     void testMiddleEmail() {
         assertDoesNotThrow(() -> validator.validate("12345"));
     }
+
+    @Test
+    void testEmptyEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> validator.validate(""),
+                "Email too short!");
+    }
 }

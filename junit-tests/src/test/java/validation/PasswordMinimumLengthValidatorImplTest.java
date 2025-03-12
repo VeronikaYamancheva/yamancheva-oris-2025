@@ -38,4 +38,10 @@ class PasswordMinimumLengthValidatorImplTest {
         boolean result = validator.validate("12345");
         assertTrue(result);
     }
+
+    @Test
+    void testEmptyPassword() {
+        boolean result = validator.validate("");
+        assertFalse(result);
+    }
 }

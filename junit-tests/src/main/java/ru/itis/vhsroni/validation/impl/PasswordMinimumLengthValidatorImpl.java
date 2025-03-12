@@ -12,7 +12,7 @@ public class PasswordMinimumLengthValidatorImpl implements PasswordValidator {
 
     @Override
     public boolean validate(String password) {
-        if (Objects.isNull(password)) return false;
+        if (Objects.isNull(password) || password.isEmpty() || password.isBlank()) return false;
         return password.length() >= minLength;
     }
 }
