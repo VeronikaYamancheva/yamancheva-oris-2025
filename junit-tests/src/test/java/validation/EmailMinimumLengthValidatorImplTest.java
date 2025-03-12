@@ -31,7 +31,7 @@ class EmailMinimumLengthValidatorImplTest {
     void testNullEmail(){
         assertThrows(IllegalArgumentException.class,
                 () -> validator.validate(null),
-                "Email too short!");
+                "Email is null");
     }
 
     @Test
@@ -43,6 +43,13 @@ class EmailMinimumLengthValidatorImplTest {
     void testEmptyEmail() {
         assertThrows(IllegalArgumentException.class,
                 () -> validator.validate(""),
-                "Email too short!");
+                "Email is empty");
+    }
+
+    @Test
+    void testBlankEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> validator.validate("  "),
+                "Email is empty");
     }
 }

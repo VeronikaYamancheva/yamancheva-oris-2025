@@ -10,8 +10,14 @@ public class EmailPatternValidatorImpl implements EmailValidator {
 
     @Override
     public void validate(String email) {
-        if (Objects.isNull(email) || email.isBlank() || email.isEmpty() || !email.matches(EMAIL_PATTERN)) {
-            throw new IllegalArgumentException("Email doesn't match pattern!");
+        if (Objects.isNull(email)) {
+            throw new IllegalArgumentException("Email is null");
+        }
+        if (email.isBlank() || email.isEmpty()) {
+            throw new IllegalArgumentException("Email is empty");
+        }
+        if (!email.matches(EMAIL_PATTERN)) {
+            throw new IllegalArgumentException("Email doesn't match pattern");
         }
     }
 }

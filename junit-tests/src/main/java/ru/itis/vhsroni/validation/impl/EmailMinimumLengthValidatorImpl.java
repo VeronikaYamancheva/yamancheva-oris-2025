@@ -12,8 +12,14 @@ public class EmailMinimumLengthValidatorImpl implements EmailValidator {
 
     @Override
     public void validate(String email) {
-        if (Objects.isNull(email) || email.isBlank() || email.isEmpty() || email.length() < minLength) {
-            throw new IllegalArgumentException("Email too short!");
+        if (Objects.isNull(email)) {
+            throw new IllegalArgumentException("Email is null");
+        }
+        if (email.isBlank() || email.isEmpty()) {
+            throw new IllegalArgumentException("Email is empty");
+        }
+        if (email.length() < minLength) {
+            throw new IllegalArgumentException("Email too short");
         }
     }
 }

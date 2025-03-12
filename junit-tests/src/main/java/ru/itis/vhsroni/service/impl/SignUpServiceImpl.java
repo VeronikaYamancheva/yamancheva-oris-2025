@@ -19,12 +19,12 @@ public class SignUpServiceImpl implements SignUpService {
     public void signUp(String email, String password) {
         emailValidator.validate(email);
 
-        if (!passwordValidator.validate(password)) {
-            throw new IllegalArgumentException("Password incorrect");
+        if (passwordBlacklistRepository.contains(password)) {
+            throw new IllegalArgumentException("Password is known");
         }
 
-        if (passwordBlacklistRepository.contains(password)) {
-            throw new IllegalArgumentException("Password is known!");
+        if (!passwordValidator.validate(password)) {
+            throw new IllegalArgumentException("Password incorrect");
         }
     }
 }

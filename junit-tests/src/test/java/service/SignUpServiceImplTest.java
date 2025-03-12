@@ -30,8 +30,8 @@ class SignUpServiceImplTest {
         EmailValidator emailValidator = mock(EmailValidator.class);
         doNothing().when(emailValidator).validate(GOOD_EMAIL);
         doThrow(new IllegalArgumentException("Email is bad")).when(emailValidator).validate(BAD_EMAIL);
-        doThrow(new IllegalArgumentException("Email is bad")).when(emailValidator).validate(null);
-        doThrow(new IllegalArgumentException("Email is bad")).when(emailValidator).validate("");
+        doThrow(new IllegalArgumentException("Email is null")).when(emailValidator).validate(null);
+        doThrow(new IllegalArgumentException("Email is empty")).when(emailValidator).validate("");
 
         PasswordValidator passwordValidator = mock(PasswordValidator.class);
         when(passwordValidator.validate(GOOD_PASSWORD)).thenReturn(true);
@@ -53,119 +53,120 @@ class SignUpServiceImplTest {
 
     @Test
     void testSignUpWithBadEmailAndGoodPassword() {
-        assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> service.signUp(BAD_EMAIL, GOOD_PASSWORD));
+        assertEquals("Email is bad", exception.getMessage());
     }
 
     @Test
     void testSignUpWithGoodEmailAndBadPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(GOOD_EMAIL, BAD_PASSWORD),
-                "Password incorrect");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(GOOD_EMAIL, BAD_PASSWORD));
+        assertEquals("Password incorrect", exception.getMessage());
     }
 
     @Test
     void testSignUpWithGoodEmailAndBlacklistPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(GOOD_EMAIL, BLACKLIST_PASSWORD),
-                "Password is known");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(GOOD_EMAIL, BLACKLIST_PASSWORD));
+        assertEquals("Password is known", exception.getMessage());
     }
 
     @Test
     void testSignUpWithBadEmailAndBadPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(BAD_EMAIL, BAD_PASSWORD),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(BAD_EMAIL, BAD_PASSWORD));
+        assertEquals("Email is bad", exception.getMessage());
     }
 
     @Test
     void testSignUpWithBadEmailAndBlacklistPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(BAD_EMAIL, BAD_PASSWORD),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(BAD_EMAIL, BLACKLIST_PASSWORD));
+        assertEquals("Email is bad", exception.getMessage());
     }
 
     @Test
     void testSignUpWithNullEmailAndNullPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(null, null),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(null, null));
+        assertEquals("Email is null", exception.getMessage());
     }
 
     @Test
     void testSignUpWithNullEmailAndBadPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(null, BAD_PASSWORD),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(null, BAD_PASSWORD));
+        assertEquals("Email is null", exception.getMessage());
     }
 
     @Test
     void testSignUpWithNullEmailAndBlacklistPasswords() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(null, BLACKLIST_PASSWORD),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(null, BLACKLIST_PASSWORD));
+        assertEquals("Email is null", exception.getMessage());
     }
 
     @Test
     void testSignUpWithNullEmailAndGoodPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(null, GOOD_PASSWORD),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(null, GOOD_PASSWORD));
+        assertEquals("Email is null", exception.getMessage());
     }
 
     @Test
     void testSignUpWithGoodEmailAndNullPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(GOOD_EMAIL, null),
-                "Password incorrect");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(GOOD_EMAIL, null));
+        assertEquals("Password incorrect", exception.getMessage());
     }
 
     @Test
     void testSignUpWithBadEmailAndNullPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(BAD_EMAIL, null),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(BAD_EMAIL, null));
+        assertEquals("Email is bad", exception.getMessage());
     }
 
     @Test
     void testSignUpWithEmptyEmailAndNullPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp("", null),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp("", null));
+        assertEquals("Email is empty", exception.getMessage());
     }
 
     @Test
     void testSignUpWithEmptyEmailAndBadPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp("", BAD_PASSWORD),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp("", BAD_PASSWORD));
+        assertEquals("Email is empty", exception.getMessage());
     }
 
     @Test
     void testSignUpWithEmptyEmailAndBlacklistPasswords() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp("", BLACKLIST_PASSWORD),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp("", BLACKLIST_PASSWORD));
+        assertEquals("Email is empty", exception.getMessage());
     }
 
     @Test
     void testSignUpWithEmptyEmailAndGoodPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp("", GOOD_PASSWORD),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp("", GOOD_PASSWORD));
+        assertEquals("Email is empty", exception.getMessage());
     }
 
     @Test
     void testSignUpWithGoodEmailAndEmptyPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(GOOD_EMAIL, ""),
-                "Password incorrect");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(GOOD_EMAIL, ""));
+        assertEquals("Password incorrect", exception.getMessage());
     }
 
     @Test
     void testSignUpWithBadEmailAndEmptyPassword() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(BAD_EMAIL, ""),
-                "Email is bad");
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> service.signUp(BAD_EMAIL, ""));
+        assertEquals("Email is bad", exception.getMessage());
     }
 }

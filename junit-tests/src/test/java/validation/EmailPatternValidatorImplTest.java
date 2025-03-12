@@ -31,13 +31,20 @@ class EmailPatternValidatorImplTest {
     void testNullEmail() {
         assertThrows(IllegalArgumentException.class,
                 () -> validator.validate(null),
-                "Email doesn't match pattern!");
+                "Email is null");
     }
 
     @Test
     void testEmptyEmail() {
         assertThrows(IllegalArgumentException.class,
                 () -> validator.validate(""),
-                "Email doesn't match pattern!");
+                "Email is empty");
+    }
+
+    @Test
+    void testBlankEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> validator.validate("  "),
+                "Email is empty");
     }
 }
