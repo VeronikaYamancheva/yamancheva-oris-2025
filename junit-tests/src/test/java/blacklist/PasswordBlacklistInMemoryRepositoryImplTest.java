@@ -10,6 +10,14 @@ class PasswordBlacklistInMemoryRepositoryImplTest {
 
     private static PasswordBlacklistInMemoryRepositoryImpl passwordBlacklistRepository;
 
+    private static final String KNOWN_PASSWORD = "qwerty007";
+
+    private static final String UNKNOWN_PASSWORD = "somePassword";
+
+    private static final String NULL_PASSWORD = null;
+
+    private static final String EMPTY_PASSWORD = "";
+
     @BeforeAll
     static void beforeAll() {
         passwordBlacklistRepository = new PasswordBlacklistInMemoryRepositoryImpl();
@@ -17,21 +25,21 @@ class PasswordBlacklistInMemoryRepositoryImplTest {
 
     @Test
     void testBlacklistPassword() {
-        assertTrue(passwordBlacklistRepository.contains("qwerty007"));
+        assertTrue(passwordBlacklistRepository.contains(KNOWN_PASSWORD));
     }
 
     @Test
     void testNonBlacklistPassword() {
-        assertFalse(passwordBlacklistRepository.contains("somePassword"));
+        assertFalse(passwordBlacklistRepository.contains(UNKNOWN_PASSWORD));
     }
 
     @Test
     void testNullPassword() {
-        assertFalse(passwordBlacklistRepository.contains(null));
+        assertFalse(passwordBlacklistRepository.contains(NULL_PASSWORD));
     }
 
     @Test
     void testEmptyPassword() {
-        assertFalse(passwordBlacklistRepository.contains(""));
+        assertFalse(passwordBlacklistRepository.contains(EMPTY_PASSWORD));
     }
 }
