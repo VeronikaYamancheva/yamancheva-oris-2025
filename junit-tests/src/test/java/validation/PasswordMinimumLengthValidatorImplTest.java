@@ -5,15 +5,9 @@ import org.junit.jupiter.api.Test;
 import ru.itis.vhsroni.validation.impl.PasswordMinimumLengthValidatorImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static constants.PasswordTestCases.*;
 
 class PasswordMinimumLengthValidatorImplTest {
-
-    private static final String LONG_PASSWORD = "longPassword";
-    private static final String SHORT_PASSWORD = "000";
-    private static final String MIDDLE_PASSWORD = "12345";
-    private static final String BLANK_PASSWORD = "          ";
-    private static final String NULL_PASSWORD = null;
-    private static final String EMPTY_PASSWORD = "";
 
     private static PasswordMinimumLengthValidatorImpl validator;
 

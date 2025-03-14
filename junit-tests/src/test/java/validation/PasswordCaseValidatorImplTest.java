@@ -5,21 +5,9 @@ import org.junit.jupiter.api.Test;
 import ru.itis.vhsroni.validation.impl.PasswordCaseValidatorImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static constants.PasswordTestCases.*;
 
 class PasswordCaseValidatorImplTest {
-
-    private static final String UPPER_CORRECT_LOWER_CORRECT_PASSWORD = "AaBbCc";
-    private static final String UPPER_MIDDLE_LOWER_MIDDLE_PASSWORD = "AaBb";
-    private static final String UPPER_WRONG_LOWER_WRONG_PASSWORD = "Aa";
-    private static final String NO_LETTERS_PASSWORD = "123";
-    private static final String NULL_PASSWORD = null;
-    private static final String UPPER_CORRECT_LOWER_WRONG_PASSWORD = "ABCa";
-    private static final String UPPER_CORRECT_LOWER_MIDDLE_PASSWORD = "ABCab";
-    private static final String UPPER_MIDDLE_LOWER_CORRECT_PASSWORD = "ABabc";
-    private static final String UPPER_MIDDLE_LOWER_WRONG_PASSWORD = "ABa";
-    private static final String UPPER_WRONG_LOWER_CORRECT_PASSWORD = "Aabc";
-    private static final String UPPER_WRONG_LOWER_MIDDLE_PASSWORD = "Aab";
-    private static final String EMPTY_PASSWORD = "";
 
     private static PasswordCaseValidatorImpl validator;
 
@@ -48,7 +36,7 @@ class PasswordCaseValidatorImplTest {
 
     @Test
     void testNoLettersPassword() {
-        boolean result = validator.validate(NO_LETTERS_PASSWORD);
+        boolean result = validator.validate(ONLY_DIGITS_PASSWORD);
         assertFalse(result);
     }
 

@@ -5,18 +5,12 @@ import org.junit.jupiter.api.Test;
 import ru.itis.vhsroni.blacklist.impl.PasswordBlacklistInMemoryRepositoryImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static constants.PasswordTestCases.*;
 
 class PasswordBlacklistInMemoryRepositoryImplTest {
 
     private static PasswordBlacklistInMemoryRepositoryImpl passwordBlacklistRepository;
 
-    private static final String KNOWN_PASSWORD = "qwerty007";
-
-    private static final String UNKNOWN_PASSWORD = "somePassword";
-
-    private static final String NULL_PASSWORD = null;
-
-    private static final String EMPTY_PASSWORD = "";
 
     @BeforeAll
     static void beforeAll() {
@@ -25,12 +19,12 @@ class PasswordBlacklistInMemoryRepositoryImplTest {
 
     @Test
     void testBlacklistPassword() {
-        assertTrue(passwordBlacklistRepository.contains(KNOWN_PASSWORD));
+        assertTrue(passwordBlacklistRepository.contains(BLACKLIST_KNOWN_PASSWORD));
     }
 
     @Test
     void testNonBlacklistPassword() {
-        assertFalse(passwordBlacklistRepository.contains(UNKNOWN_PASSWORD));
+        assertFalse(passwordBlacklistRepository.contains(BLACKLIST_UNKNOWN_PASSWORD));
     }
 
     @Test

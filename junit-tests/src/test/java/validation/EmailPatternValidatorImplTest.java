@@ -5,18 +5,9 @@ import org.junit.jupiter.api.Test;
 import ru.itis.vhsroni.validation.impl.EmailPatternValidatorImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static constants.EmailTestCases.*;
 
 class EmailPatternValidatorImplTest {
-
-    private static final String NULL_EMAIL = null;
-
-    private static final String EMPTY_EMAIL = "";
-
-    private static final String BLANK_EMAIL = " ";
-
-    private static final String CORRECT_EMAIL = "testemail@mail.ru";
-
-    private static final String WRONG_EMAIL = "12345";
 
     private static EmailPatternValidatorImpl validator;
 
@@ -27,13 +18,13 @@ class EmailPatternValidatorImplTest {
 
     @Test
     void testMatchingPatternEmail() {
-        assertDoesNotThrow(() -> validator.validate(CORRECT_EMAIL));
+        assertDoesNotThrow(() -> validator.validate(CORRECT_PATTERN_EMAIL));
     }
 
     @Test
     void testMismatchingPatternEmail() {
         assertThrows(IllegalArgumentException.class,
-                () -> validator.validate(WRONG_EMAIL),
+                () -> validator.validate(WRONG_PATTERN_EMAIL),
                 "Email doesn't match pattern!");
     }
 

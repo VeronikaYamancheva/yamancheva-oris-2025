@@ -9,27 +9,10 @@ import ru.itis.vhsroni.validation.PasswordValidator;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static constants.PasswordTestCases.*;
+import static constants.EmailTestCases.*;
 
 class SignUpServiceImplTest {
-
-    private static final String GOOD_EMAIL = "goodEmail";
-
-    private static final String BAD_EMAIL = "badEmail";
-
-    private static final String GOOD_PASSWORD = "goodPassword";
-
-    private static final String BAD_PASSWORD = "badPassword";
-
-    private static final String BLACKLIST_PASSWORD = "blacklistPassword";
-
-    private static final String NULL_PASSWORD = null;
-
-    private static final String EMPTY_PASSWORD = "";
-
-    private static final String NULL_EMAIL = null;
-
-    private static final String EMPTY_EMAIL = "";
-
 
     private static SignUpServiceImpl service;
 
@@ -50,7 +33,7 @@ class SignUpServiceImplTest {
 
         PasswordBlacklistRepository passwordBlacklistRepository = mock(PasswordBlacklistRepository.class);
         when(passwordBlacklistRepository.contains(anyString())).thenReturn(false);
-        when(passwordBlacklistRepository.contains(BLACKLIST_PASSWORD)).thenReturn(true);
+        when(passwordBlacklistRepository.contains(BLACKLIST_KNOWN_PASSWORD)).thenReturn(true);
 
         service = new SignUpServiceImpl(emailValidator, passwordValidator, passwordBlacklistRepository);
     }
@@ -77,7 +60,7 @@ class SignUpServiceImplTest {
     @Test
     void testSignUpWithGoodEmailAndBlacklistPassword() {
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(GOOD_EMAIL, BLACKLIST_PASSWORD));
+                () -> service.signUp(GOOD_EMAIL, BLACKLIST_KNOWN_PASSWORD));
         assertEquals("Password is known", exception.getMessage());
     }
 
@@ -91,7 +74,7 @@ class SignUpServiceImplTest {
     @Test
     void testSignUpWithBadEmailAndBlacklistPassword() {
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(BAD_EMAIL, BLACKLIST_PASSWORD));
+                () -> service.signUp(BAD_EMAIL, BLACKLIST_KNOWN_PASSWORD));
         assertEquals("Email is bad", exception.getMessage());
     }
 
@@ -112,7 +95,7 @@ class SignUpServiceImplTest {
     @Test
     void testSignUpWithNullEmailAndBlacklistPasswords() {
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(NULL_EMAIL, BLACKLIST_PASSWORD));
+                () -> service.signUp(NULL_EMAIL, BLACKLIST_KNOWN_PASSWORD));
         assertEquals("Email is null", exception.getMessage());
     }
 
@@ -154,7 +137,7 @@ class SignUpServiceImplTest {
     @Test
     void testSignUpWithEmptyEmailAndBlacklistPasswords() {
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> service.signUp(EMPTY_EMAIL, BLACKLIST_PASSWORD));
+                () -> service.signUp(EMPTY_EMAIL, BLACKLIST_KNOWN_PASSWORD));
         assertEquals("Email is empty", exception.getMessage());
     }
 
