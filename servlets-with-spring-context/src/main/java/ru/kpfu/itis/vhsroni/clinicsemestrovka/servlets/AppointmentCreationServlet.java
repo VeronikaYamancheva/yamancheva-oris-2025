@@ -6,12 +6,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.ApplicationContext;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.entities.AppointmentEntity;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.entities.DentistEntity;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.entities.ProcedureEntity;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.exceptions.DateTimeValidationException;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.exceptions.DbException;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.AppointmentService;
+import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.ProcedureService;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.utils.AppointmentDateTimeValidator;
 
 import java.io.IOException;
@@ -32,8 +34,8 @@ public class AppointmentCreationServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        appointmentService = (AppointmentService) getServletContext().getAttribute("appointmentService");
-
+        ApplicationContext springContext = (ApplicationContext) getServletContext().getAttribute("springContext");
+        appointmentService = springContext.getBean("appointmentService", AppointmentService.class);
     }
 
     @Override

@@ -6,7 +6,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.ApplicationContext;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.dto.ClientSignResponseDto;
+import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.AppointmentService;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.ClientService;
 
 import java.io.IOException;
@@ -21,7 +23,8 @@ public class SignInServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        clientService = (ClientService) getServletContext().getAttribute("clientService");
+        ApplicationContext springContext = (ApplicationContext) getServletContext().getAttribute("springContext");
+        clientService = springContext.getBean("clientService", ClientService.class);
     }
 
     @Override

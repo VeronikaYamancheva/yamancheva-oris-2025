@@ -5,6 +5,8 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import org.postgresql.ds.PGSimpleDataSource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.AppointmentDao;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.AppointmentProcedureDao;
@@ -26,32 +28,8 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
 
-        DataSource dataSource = dataSource();
-
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource());
-
-        AppointmentProcedureRowMapper appointmentProcedureRowMapper = new AppointmentProcedureRowMapper();
-        AppointmentRowMapper appointmentRowMapper = new AppointmentRowMapper();
-        ClientRowMapper clientRowMapper = new ClientRowMapper();
-        DentistRowMapper dentistRowMapper = new DentistRowMapper();
-        ProcedureRowMapper procedureRowMapper = new ProcedureRowMapper();
-
-        ClientDaoImpl clientDao = new ClientDaoImpl(jdbcTemplate, clientRowMapper);
-        ProcedureDao procedureDao = new ProcedureDaoImpl(jdbcTemplate, procedureRowMapper);
-        DentistDao dentistDao = new DentistDaoImpl(jdbcTemplate, dentistRowMapper);
-        AppointmentDao appointmentDao = new AppointmentDaoImpl(jdbcTemplate, appointmentRowMapper);
-        AppointmentProcedureDao appointmentProcedureDao = new AppointmentProcedureDaoImpl(jdbcTemplate,
-                appointmentProcedureRowMapper, procedureRowMapper);
-
-        ClientService clientService = new ClientServiceImpl(clientDao);
-        ProcedureService procedureService = new ProcedureServiceImpl(procedureDao);
-        DentistService dentistService = new DentistServiceImpl(dentistDao);
-        AppointmentService appointmentService = new AppointmentServiceImpl(appointmentDao, dentistDao, procedureDao, clientDao, appointmentProcedureDao);
-
-        context.setAttribute("clientService", clientService);
-        context.setAttribute("procedureService", procedureService);
-        context.setAttribute("dentistService", dentistService);
-        context.setAttribute("appointmentService", appointmentService);
+        ApplicationContext springContext = new ClassPathXmlApplicationContext("config/context.xml");
+        context.setAttribute("springContext", springContext);
 
         List<String> PROTECTED_URIS = List.of(context.getContextPath() + "/profile", context.getContextPath() + "/create_appointment");;
         context.setAttribute("PROTECTED_URIS", PROTECTED_URIS);
@@ -62,13 +40,5 @@ public class ContextListener implements ServletContextListener {
         context.setAttribute("PROTECTED_REDIRECT", PROTECTED_REDIRECT);
         String NOT_AUTH_REDIRECT = context.getContextPath() + "/sign_out";
         context.setAttribute("NOT_AUTH_REDIRECT", NOT_AUTH_REDIRECT);
-    }
-
-    private DataSource dataSource() {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setUrl(PropertyReader.getProperty("DB_URL"));
-        dataSource.setUser(PropertyReader.getProperty("DB_USER"));
-        dataSource.setPassword(PropertyReader.getProperty("DB_PASSWORD"));
-        return dataSource;
     }
 }

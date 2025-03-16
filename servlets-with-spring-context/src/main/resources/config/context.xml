@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:properties/app.properties"/>
+
+    <bean id="dataSource" class="org.postgresql.ds.PGSimpleDataSource">
+        <property name="url" value="${DB_URL}"/>
+        <property name="user" value="${DB_USER}"/>
+        <property name="password" value="${DB_PASSWORD}"/>
+    </bean>
+
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="appointmentProcedureRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.AppointmentProcedureRowMapper"/>
+
+    <bean id="appointmentRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.AppointmentRowMapper"/>
+
+    <bean id="clientRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.ClientRowMapper"/>
+
+    <bean id="dentistRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.DentistRowMapper"/>
+
+    <bean id="procedureRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.ProcedureRowMapper"/>
+
+    <bean id="appointmentDao"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.AppointmentDaoImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="appointmentRowMapper"/>
+    </bean>
+
+    <bean id="appointmentProcedureDao"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.AppointmentProcedureDaoImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="appointmentProcedureRowMapper"/>
+        <constructor-arg ref="procedureRowMapper"/>
+    </bean>
+
+    <bean id="clientDao"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.ClientDaoImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="clientRowMapper"/>
+    </bean>
+
+    <bean id="dentistDao"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.DentistDaoImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="dentistRowMapper"/>
+    </bean>
+
+    <bean id="procedureDao"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.ProcedureDaoImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="procedureRowMapper"/>
+    </bean>
+
+    <bean id="appointmentService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.AppointmentServiceImpl">
+        <constructor-arg ref="appointmentDao"/>
+        <constructor-arg ref="dentistDao"/>
+        <constructor-arg ref="procedureDao"/>
+        <constructor-arg ref="clientDao"/>
+        <constructor-arg ref="appointmentProcedureDao"/>
+    </bean>
+
+    <bean id="clientService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.ClientServiceImpl">
+        <constructor-arg ref="clientDao"/>
+    </bean>
+
+    <bean id="dentistService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.DentistServiceImpl">
+        <constructor-arg ref="dentistDao"/>
+    </bean>
+
+    <bean id="procedureService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.ProcedureServiceImpl">
+        <constructor-arg ref="procedureDao"/>
+    </bean>
+
+</beans>

@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.ApplicationContext;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.entities.DentistEntity;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.exceptions.DbException;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.DentistService;
@@ -23,7 +24,8 @@ public class DentistsUpdateServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        dentistService = (DentistService) getServletContext().getAttribute("dentistService");
+        ApplicationContext springContext = (ApplicationContext) getServletContext().getAttribute("springContext");
+        dentistService = springContext.getBean("dentistService", DentistService.class);
     }
 
     @Override

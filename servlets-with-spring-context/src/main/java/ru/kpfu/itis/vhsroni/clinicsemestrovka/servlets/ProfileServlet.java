@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import org.springframework.context.ApplicationContext;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.dto.ClientSignResponseDto;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.entities.AppointmentEntity;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.entities.ClientEntity;
@@ -35,8 +36,9 @@ public class ProfileServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        clientService = (ClientService) getServletContext().getAttribute("clientService");
-        appointmentService = (AppointmentService) getServletContext().getAttribute("appointmentService");
+        ApplicationContext springContext = (ApplicationContext) getServletContext().getAttribute("springContext");
+        appointmentService = springContext.getBean("appointmentService", AppointmentService.class);
+        clientService = springContext.getBean("clientService", ClientService.class);
     }
 
     @Override

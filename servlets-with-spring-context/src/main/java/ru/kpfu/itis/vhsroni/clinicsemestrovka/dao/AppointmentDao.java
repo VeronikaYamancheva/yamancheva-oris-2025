@@ -14,5 +14,5 @@ public interface AppointmentDao {
 
     Optional<AppointmentEntity> findById(Long id);
 
-    public List<AppointmentEntity> getAllByClientId(Long id);
+    List<AppointmentEntity> getAllByClientId(Long id);
 }
