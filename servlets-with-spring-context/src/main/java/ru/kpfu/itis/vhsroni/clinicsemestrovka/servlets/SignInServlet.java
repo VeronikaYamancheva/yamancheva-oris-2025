@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.dto.ClientSignResponseDto;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.AppointmentService;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.ClientService;
+import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.SignInService;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -18,13 +19,13 @@ import java.nio.charset.StandardCharsets;
 @WebServlet("/sign_in")
 public class SignInServlet extends HttpServlet {
 
-    private ClientService clientService;
+    private SignInService signInService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ApplicationContext springContext = (ApplicationContext) getServletContext().getAttribute("springContext");
-        clientService = springContext.getBean("clientService", ClientService.class);
+        signInService = springContext.getBean("signInService", SignInService.class);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class SignInServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        ClientSignResponseDto result = clientService.authorize(
+        ClientSignResponseDto result = signInService.authorize(
                 req.getParameter("nickname"),
                 req.getParameter("password")
         );

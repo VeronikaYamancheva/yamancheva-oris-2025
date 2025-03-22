@@ -12,8 +12,6 @@ public interface ClientService {
 
     ClientSignResponseDto save(String email, String nickname, String password, String cpassword, String adminCode) throws IOException, ServletException, DbException;
 
-    ClientSignResponseDto authorize(String email, String nickname) throws IOException, ServletException;
-
     ClientSignResponseDto update(String firstName, String lastName, String email) throws DbException;
 
     boolean checkUniqueEmail(String email);
@@ -23,6 +21,4 @@ public interface ClientService {
     boolean checkIsAdmin(String adminCode);
 
     List<ClientEntity> getAllNotAdmins();
-
-    String addPhotoId (Long clientId, String photoId);
 }

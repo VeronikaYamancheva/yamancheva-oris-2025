@@ -13,8 +13,7 @@ import ru.kpfu.itis.vhsroni.clinicsemestrovka.entities.ProcedureEntity;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.exceptions.DateTimeValidationException;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.exceptions.DbException;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.AppointmentService;
-import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.ProcedureService;
-import ru.kpfu.itis.vhsroni.clinicsemestrovka.utils.AppointmentDateTimeValidator;
+import ru.kpfu.itis.vhsroni.clinicsemestrovka.validators.AppointmentDateTimeValidator;
 
 import java.io.IOException;
 import java.net.URLEncoder;

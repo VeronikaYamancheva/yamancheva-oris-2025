@@ -11,6 +11,6 @@ public class HashUtil {
     }
 
     public boolean verifyPassword(String rawPassword, String hashPassword) {
-        return BCrypt.checkpw(rawPassword, hashPassword);
+        return BCrypt.checkpw(rawPassword, hashPassword );
     }
 }

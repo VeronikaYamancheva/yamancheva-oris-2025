@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import ru.kpfu.itis.vhsroni.clinicsemestrovka.utils.PropertyReader;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,13 +20,11 @@ public class AuthFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        PROTECTED_URIS = List.of(PropertyReader.getProperty("PROTECTED_URIS"));
+        NOT_AUTH_URIS = List.of(PropertyReader.getProperty("NOT_AUTH_URIS"));
 
-        ServletContext context = filterConfig.getServletContext();
-        PROTECTED_URIS = (List<String>) context.getAttribute("PROTECTED_URIS");
-        NOT_AUTH_URIS = (List<String>) context.getAttribute("NOT_AUTH_URIS");
-
-        PROTECTED_REDIRECT = (String) context.getAttribute("PROTECTED_REDIRECT");
-        NOT_AUTH_REDIRECT = (String) context.getAttribute("NOT_AUTH_REDIRECT");
+        PROTECTED_REDIRECT = PropertyReader.getProperty("PROTECTED_REDIRECT");
+        NOT_AUTH_REDIRECT = PropertyReader.getProperty("NOT_AUTH_REDIRECT");
     }
 
     @Override

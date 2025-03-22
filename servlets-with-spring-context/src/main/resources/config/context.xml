@@ -35,59 +35,64 @@
     <bean id="procedureRowMapper"
           class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.ProcedureRowMapper"/>
 
-    <bean id="appointmentDao"
-          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.AppointmentDaoImpl">
+    <bean id="appointmentRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.AppointmentRepositoryImpl">
         <constructor-arg ref="jdbcTemplate"/>
         <constructor-arg ref="appointmentRowMapper"/>
     </bean>
 
-    <bean id="appointmentProcedureDao"
-          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.AppointmentProcedureDaoImpl">
+    <bean id="appointmentProcedureRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.AppointmentProcedureRepositoryImpl">
         <constructor-arg ref="jdbcTemplate"/>
         <constructor-arg ref="appointmentProcedureRowMapper"/>
         <constructor-arg ref="procedureRowMapper"/>
     </bean>
 
-    <bean id="clientDao"
-          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.ClientDaoImpl">
+    <bean id="clientRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.ClientRepositoryImpl">
         <constructor-arg ref="jdbcTemplate"/>
         <constructor-arg ref="clientRowMapper"/>
     </bean>
 
-    <bean id="dentistDao"
-          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.DentistDaoImpl">
+    <bean id="dentistRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.DentistRepositoryImpl">
         <constructor-arg ref="jdbcTemplate"/>
         <constructor-arg ref="dentistRowMapper"/>
     </bean>
 
-    <bean id="procedureDao"
-          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.impl.ProcedureDaoImpl">
+    <bean id="procedureRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.ProcedureRepositoryImpl">
         <constructor-arg ref="jdbcTemplate"/>
         <constructor-arg ref="procedureRowMapper"/>
     </bean>
 
     <bean id="appointmentService"
           class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.AppointmentServiceImpl">
-        <constructor-arg ref="appointmentDao"/>
-        <constructor-arg ref="dentistDao"/>
-        <constructor-arg ref="procedureDao"/>
-        <constructor-arg ref="clientDao"/>
-        <constructor-arg ref="appointmentProcedureDao"/>
+        <constructor-arg ref="appointmentRepository"/>
+        <constructor-arg ref="dentistRepository"/>
+        <constructor-arg ref="procedureRepository"/>
+        <constructor-arg ref="clientRepository"/>
+        <constructor-arg ref="appointmentProcedureRepository"/>
     </bean>
 
     <bean id="clientService"
           class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.ClientServiceImpl">
-        <constructor-arg ref="clientDao"/>
+        <constructor-arg ref="clientRepository"/>
     </bean>
 
     <bean id="dentistService"
           class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.DentistServiceImpl">
-        <constructor-arg ref="dentistDao"/>
+        <constructor-arg ref="dentistRepository"/>
     </bean>
 
     <bean id="procedureService"
           class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.ProcedureServiceImpl">
-        <constructor-arg ref="procedureDao"/>
+        <constructor-arg ref="procedureRepository"/>
+    </bean>
+
+    <bean id="signInService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.SignInServiceImpl">
+        <constructor-arg ref="clientRepository"/>
     </bean>
 
 </beans>

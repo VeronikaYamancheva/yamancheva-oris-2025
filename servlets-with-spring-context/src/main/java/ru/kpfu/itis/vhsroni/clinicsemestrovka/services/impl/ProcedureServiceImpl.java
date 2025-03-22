@@ -1,7 +1,7 @@
 package ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import ru.kpfu.itis.vhsroni.clinicsemestrovka.dao.ProcedureDao;
+import ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.ProcedureRepository;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.entities.ProcedureEntity;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.exceptions.DbException;
 import ru.kpfu.itis.vhsroni.clinicsemestrovka.services.ProcedureService;
@@ -12,33 +12,33 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProcedureServiceImpl implements ProcedureService {
 
-    private final ProcedureDao procedureDao;
+    private final ProcedureRepository procedureRepository;
 
     @Override
     public List<ProcedureEntity> getServicesList(int page) {
         int pageSize = 7;
         int offset = (page - 1) * pageSize;
-        List<ProcedureEntity> procedures = procedureDao.getAllInsideSelectedRange(pageSize, offset);
+        List<ProcedureEntity> procedures = procedureRepository.getAllInsideSelectedRange(pageSize, offset);
         return procedures;
     }
 
     @Override
     public Integer getCount() {
-        return procedureDao.getCount();
+        return procedureRepository.getCount();
     }
 
     @Override
     public Optional<ProcedureEntity> save(String name, String description) {
-        return procedureDao.save(name, description);
+        return procedureRepository.save(name, description);
     }
 
     @Override
     public void deleteById(Long id) throws DbException {
-        procedureDao.deleteById(id);
+        procedureRepository.deleteById(id);
     }
 
     @Override
     public Optional<ProcedureEntity> update(Long procedureId, String name, String description) throws DbException {
-        return procedureDao.update(procedureId, name, description);
+        return procedureRepository.update(procedureId, name, description);
     }
 }
