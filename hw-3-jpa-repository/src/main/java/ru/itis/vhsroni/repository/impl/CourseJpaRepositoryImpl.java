@@ -5,7 +5,6 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
-import ru.itis.vhsroni.annotation.MyTransactional;
 import ru.itis.vhsroni.exception.CourseNotFoundException;
 import ru.itis.vhsroni.exception.UserNotFoundException;
 import ru.itis.vhsroni.model.CourseEntity;
@@ -27,14 +26,12 @@ public class CourseJpaRepositoryImpl implements CourseRepository {
     private static final String JPQL_FIND_BY_TITLE = "select course from CourseEntity course where course.title = :title";
 
     @Override
-    @MyTransactional
     public CourseEntity save(CourseEntity course) {
         entityManager.persist(course);
         return course;
     }
 
     @Override
-    @MyTransactional
     public CourseEntity updateById(CourseEntity entity, Long id) {
         CourseEntity course = entityManager.find(CourseEntity.class, id);
         if (course == null) {
@@ -47,7 +44,6 @@ public class CourseJpaRepositoryImpl implements CourseRepository {
     }
 
     @Override
-    @MyTransactional
     public void deleteById(Long id) {
         CourseEntity course = entityManager.find(CourseEntity.class, id);
         if (course == null) {
@@ -57,7 +53,6 @@ public class CourseJpaRepositoryImpl implements CourseRepository {
     }
 
     @Override
-    @MyTransactional
     public List<CourseEntity> findAll() {
         TypedQuery<CourseEntity> query = entityManager.createQuery(JPQL_SELECT_ALL, CourseEntity.class);
         return query.getResultList();
@@ -69,14 +64,12 @@ public class CourseJpaRepositoryImpl implements CourseRepository {
     }
 
     @Override
-    @MyTransactional
     public Long countCourses() {
         TypedQuery<Long> query = entityManager.createQuery(JPQL_SELECT_COURSES_COUNT, Long.class);
         return query.getSingleResult();
     }
 
     @Override
-    @MyTransactional
     public Optional<CourseEntity> findByTitle(String title) {
         TypedQuery<CourseEntity> query = entityManager.createQuery(JPQL_FIND_BY_TITLE, CourseEntity.class);
         query.setParameter("title", title);
@@ -90,7 +83,6 @@ public class CourseJpaRepositoryImpl implements CourseRepository {
     }
 
     @Override
-    @MyTransactional
     public void addUserToCourse(Long courseId, Long userId) {
         CourseEntity course = entityManager.find(CourseEntity.class, courseId);
         if (course == null) {

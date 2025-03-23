@@ -2,7 +2,6 @@ package ru.itis.vhsroni.repository.impl;
 
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
-import ru.itis.vhsroni.annotation.MyTransactional;
 import ru.itis.vhsroni.exception.UserNotFoundException;
 import ru.itis.vhsroni.model.UserEntity;
 import ru.itis.vhsroni.repository.UserRepository;
@@ -32,14 +31,12 @@ public class UserJpaRepositoryImpl implements UserRepository {
             """;
 
     @Override
-    @MyTransactional
     public UserEntity save(UserEntity user) {
         entityManager.persist(user);
         return user;
     }
 
     @Override
-    @MyTransactional
     public UserEntity updateById(UserEntity entity, Long id) {
         UserEntity user = entityManager.find(UserEntity.class, id);
         if(user == null) {
@@ -51,7 +48,6 @@ public class UserJpaRepositoryImpl implements UserRepository {
     }
 
     @Override
-    @MyTransactional
     public void deleteById(Long id) {
         UserEntity user = entityManager.find(UserEntity.class, id);
         if(user == null) {
@@ -61,7 +57,6 @@ public class UserJpaRepositoryImpl implements UserRepository {
     }
 
     @Override
-    @MyTransactional
     public List<UserEntity> findAll() {
         TypedQuery<UserEntity> query = entityManager.createQuery(JPQL_SELECT_ALL, UserEntity.class);
         return query.getResultList();
@@ -73,7 +68,6 @@ public class UserJpaRepositoryImpl implements UserRepository {
     }
 
     @Override
-    @MyTransactional
     public Optional<UserEntity> findByName(String name) {
         TypedQuery<UserEntity> query = entityManager.createQuery(JPQL_SELECT_BY_NAME, UserEntity.class);
         query.setParameter("name", name);
@@ -87,14 +81,12 @@ public class UserJpaRepositoryImpl implements UserRepository {
     }
 
     @Override
-    @MyTransactional
     public List<UserEntity> findUsersWithNoCourses() {
         TypedQuery<UserEntity> query = entityManager.createQuery(JPQL_FIND_WITH_NO_COURSES, UserEntity.class);
         return query.getResultList();
     }
 
     @Override
-    @MyTransactional
     public Long countUsersByCourseId(Long courseId) {
         TypedQuery<Long> query = entityManager.createQuery(JPQL_COUNT_BY_COURSE_ID, Long.class);
         query.setParameter("courseId", courseId);
@@ -102,7 +94,6 @@ public class UserJpaRepositoryImpl implements UserRepository {
     }
 
     @Override
-    @MyTransactional
     public List<UserEntity> findUsersByCourseId(Long courseId) {
         TypedQuery<UserEntity> query = entityManager.createQuery(JPQL_FIND_BY_COURSE_ID, UserEntity.class);
         query.setParameter("courseId", courseId);

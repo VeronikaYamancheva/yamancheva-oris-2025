@@ -3,7 +3,6 @@ package ru.itis.vhsroni.repository.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
-import ru.itis.vhsroni.annotation.MyTransactional;
 import ru.itis.vhsroni.exception.CourseNotFoundException;
 import ru.itis.vhsroni.exception.LessonNotFoundException;
 import ru.itis.vhsroni.model.CourseEntity;
@@ -29,14 +28,15 @@ public class LessonJpaRepositoryImpl implements LessonRepository {
             """;
 
     @Override
-    @MyTransactional
     public LessonEntity save(LessonEntity lesson) {
+        if (lesson.getCourse() != null && lesson.getCourse().getId() == null) {
+            entityManager.persist(lesson.getCourse());
+        }
         entityManager.persist(lesson);
         return lesson;
     }
 
     @Override
-    @MyTransactional
     public LessonEntity updateById(LessonEntity entity, Long id) {
         LessonEntity lesson = entityManager.find(LessonEntity.class, id);
         if (lesson == null) {
@@ -48,7 +48,6 @@ public class LessonJpaRepositoryImpl implements LessonRepository {
     }
 
     @Override
-    @MyTransactional
     public void deleteById(Long id) {
         LessonEntity lesson = entityManager.find(LessonEntity.class, id);
         if (lesson == null) {
@@ -58,7 +57,6 @@ public class LessonJpaRepositoryImpl implements LessonRepository {
     }
 
     @Override
-    @MyTransactional
     public List<LessonEntity> findAll() {
         TypedQuery<LessonEntity> query = entityManager.createQuery(JPQL_SELECT_ALL, LessonEntity.class);
         return query.getResultList();
@@ -70,7 +68,6 @@ public class LessonJpaRepositoryImpl implements LessonRepository {
     }
 
     @Override
-    @MyTransactional
     public Long countLessonsByCourseId(Long courseId) {
         TypedQuery<Long> query = entityManager.createQuery(JPQL_COUNT_BY_COURSE_ID, Long.class);
         query.setParameter("courseId", courseId);
@@ -78,7 +75,6 @@ public class LessonJpaRepositoryImpl implements LessonRepository {
     }
 
     @Override
-    @MyTransactional
     public void removeLessonFromCourse(Long courseId, Long lessonId) {
         CourseEntity course = entityManager.find(CourseEntity.class, courseId);
         if (course == null) {
@@ -94,7 +90,6 @@ public class LessonJpaRepositoryImpl implements LessonRepository {
     }
 
     @Override
-    @MyTransactional
     public List<LessonEntity> findLessonsByCourseId(Long courseId) {
         TypedQuery<LessonEntity> query = entityManager.createQuery(JPQL_FIND_BY_COURSE_ID, LessonEntity.class);
         query.setParameter("courseId", courseId);
