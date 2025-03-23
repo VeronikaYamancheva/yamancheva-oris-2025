@@ -17,7 +17,19 @@ public class UserJpaRepositoryImpl implements UserRepository {
 
     private static final String JPQL_SELECT_ALL = "select user from UserEntity user";
 
-    private static final String SELECT_BY_NAME = "select user from UserEntity user where user.name = :name";
+    private static final String JPQL_SELECT_BY_NAME = "select user from UserEntity user where user.name = :name";
+
+    private static final String JPQL_FIND_WITH_NO_COURSES = """
+            select user from UserEntity user where user.courses is empty
+            """;
+
+    private static final String JPQL_COUNT_BY_COURSE_ID = """
+            select count(user) from UserEntity user join user.courses course where course.id = :courseId
+            """;
+
+    private static final String JPQL_FIND_BY_COURSE_ID = """
+            select user from UserEntity user join user.courses course where course.id = :courseId
+            """;
 
     @Override
     @MyTransactional
@@ -43,7 +55,7 @@ public class UserJpaRepositoryImpl implements UserRepository {
     public void deleteById(Long id) {
         UserEntity user = entityManager.find(UserEntity.class, id);
         if(user == null) {
-            throw new IllegalArgumentException("User id " + id + " not found!");
+            throw new UserNotFoundException(id);
         }
         entityManager.remove(user);
     }
@@ -63,15 +75,37 @@ public class UserJpaRepositoryImpl implements UserRepository {
     @Override
     @MyTransactional
     public Optional<UserEntity> findByName(String name) {
-        TypedQuery<UserEntity> query = entityManager.createQuery(SELECT_BY_NAME, UserEntity.class);
+        TypedQuery<UserEntity> query = entityManager.createQuery(JPQL_SELECT_BY_NAME, UserEntity.class);
         query.setParameter("name", name);
         try {
-            UserEntity user = query.getSingleResult();
-            return Optional.of(user);
+            return Optional.of(query.getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
         } catch (NonUniqueResultException e) {
-            throw new IllegalStateException("Non unique users with name " + name);
+            throw new UserNotFoundException(name);
         }
+    }
+
+    @Override
+    @MyTransactional
+    public List<UserEntity> findUsersWithNoCourses() {
+        TypedQuery<UserEntity> query = entityManager.createQuery(JPQL_FIND_WITH_NO_COURSES, UserEntity.class);
+        return query.getResultList();
+    }
+
+    @Override
+    @MyTransactional
+    public Long countUsersByCourseId(Long courseId) {
+        TypedQuery<Long> query = entityManager.createQuery(JPQL_COUNT_BY_COURSE_ID, Long.class);
+        query.setParameter("courseId", courseId);
+        return query.getSingleResult();
+    }
+
+    @Override
+    @MyTransactional
+    public List<UserEntity> findUsersByCourseId(Long courseId) {
+        TypedQuery<UserEntity> query = entityManager.createQuery(JPQL_FIND_BY_COURSE_ID, UserEntity.class);
+        query.setParameter("courseId", courseId);
+        return query.getResultList();
     }
 }

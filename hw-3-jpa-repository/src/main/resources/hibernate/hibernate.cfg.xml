@@ -5,16 +5,16 @@
     <session-factory>
         <property name="connection.driver_class">org.postgresql.Driver</property>
         <property name="connection.username">postgres</property>
-        <property name="connection.password">qwerty</property>
-        <property name="connection.url">jdbc:postgresql://localhost:5432/oris-spring-2025</property>
+        <property name="connection.password">Veronika73.</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/oris_hw_3_db</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>
         <property name="connection.pool_size">10</property>
         <property name="hbm2ddl.auto">create</property>
-        <mapping class="ru.itis.model.Course"/>
-        <mapping class="ru.itis.model.Lesson"/>
-        <mapping class="ru.itis.model.UserEntity"/>
+        <mapping class="ru.itis.vhsroni.model.CourseEntity"/>
+        <mapping class="ru.itis.vhsroni.model.LessonEntity"/>
+        <mapping class="ru.itis.vhsroni.model.UserEntity"/>
     </session-factory>
 </hibernate-configuration>

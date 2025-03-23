@@ -4,7 +4,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import ru.itis.vhsroni.annotation.MyTransactional;
+import ru.itis.vhsroni.exception.CourseNotFoundException;
 import ru.itis.vhsroni.exception.LessonNotFoundException;
+import ru.itis.vhsroni.model.CourseEntity;
 import ru.itis.vhsroni.model.LessonEntity;
 import ru.itis.vhsroni.repository.LessonRepository;
 
@@ -17,6 +19,14 @@ public class LessonJpaRepositoryImpl implements LessonRepository {
     private final EntityManager entityManager;
 
     private static final String JPQL_SELECT_ALL = "select lesson from LessonEntity lesson";
+
+    private static final String JPQL_COUNT_BY_COURSE_ID = """
+            select count(lesson) from LessonEntity lesson where lesson.course.id = :courseId
+            """;
+
+    private static final String JPQL_FIND_BY_COURSE_ID = """
+            select lesson from LessonEntity lesson where lesson.course.id = :courseId
+            """;
 
     @Override
     @MyTransactional
@@ -57,5 +67,37 @@ public class LessonJpaRepositoryImpl implements LessonRepository {
     @Override
     public Optional<LessonEntity> findById(Long id) {
         return Optional.ofNullable(entityManager.find(LessonEntity.class, id));
+    }
+
+    @Override
+    @MyTransactional
+    public Long countLessonsByCourseId(Long courseId) {
+        TypedQuery<Long> query = entityManager.createQuery(JPQL_COUNT_BY_COURSE_ID, Long.class);
+        query.setParameter("courseId", courseId);
+        return query.getSingleResult();
+    }
+
+    @Override
+    @MyTransactional
+    public void removeLessonFromCourse(Long courseId, Long lessonId) {
+        CourseEntity course = entityManager.find(CourseEntity.class, courseId);
+        if (course == null) {
+            throw new CourseNotFoundException(courseId);
+        }
+        LessonEntity lesson = entityManager.find(LessonEntity.class, lessonId);
+        if (lesson == null) {
+            throw new LessonNotFoundException(lessonId);
+        }
+        if (lesson.getCourse().equals(course)) {
+            entityManager.remove(lesson);
+        }
+    }
+
+    @Override
+    @MyTransactional
+    public List<LessonEntity> findLessonsByCourseId(Long courseId) {
+        TypedQuery<LessonEntity> query = entityManager.createQuery(JPQL_FIND_BY_COURSE_ID, LessonEntity.class);
+        query.setParameter("courseId", courseId);
+        return query.getResultList();
     }
 }
