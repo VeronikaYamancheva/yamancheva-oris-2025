@@ -53,7 +53,7 @@ public class CourseJpaRepositoryImpl implements CourseRepository {
         if (course == null) {
             throw new CourseNotFoundException(id);
         }
-        entityManager.remove(id);
+        entityManager.remove(course);
     }
 
     @Override

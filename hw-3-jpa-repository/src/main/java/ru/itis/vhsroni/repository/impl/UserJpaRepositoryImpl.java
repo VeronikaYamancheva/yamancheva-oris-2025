@@ -108,4 +108,5 @@ public class UserJpaRepositoryImpl implements UserRepository {
         query.setParameter("courseId", courseId);
         return query.getResultList();
     }
+
 }
