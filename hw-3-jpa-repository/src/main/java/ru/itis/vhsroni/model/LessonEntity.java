@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@ToString(exclude = "course")
 @Entity
-public class Lesson {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "lesson")
+@ToString(exclude = "course")
+public class LessonEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,5 +20,5 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
-    private Course course;
+    private CourseEntity course;
 }

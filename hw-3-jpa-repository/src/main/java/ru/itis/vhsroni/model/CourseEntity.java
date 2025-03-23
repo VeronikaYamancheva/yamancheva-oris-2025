@@ -3,15 +3,17 @@ package ru.itis.vhsroni.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@ToString(exclude = "users")
 @Entity
-public class Course {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "course")
+@ToString(exclude = "users")
+public class CourseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,8 +21,8 @@ public class Course {
     private String title;
 
     @OneToMany(mappedBy = "course")
-    private List<Lesson> lessons;
+    private Set<LessonEntity> lessons;
 
     @ManyToMany(mappedBy = "courses")
-    private List<UserEntity> users;
+    private Set<UserEntity> users;
 }
