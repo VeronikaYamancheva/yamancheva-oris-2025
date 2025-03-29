@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group = 'ru.vhsroni'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.springframework:spring-context:6.1.5")
+    implementation("org.springframework:spring-webmvc:6.1.5")
+    implementation("org.springframework:spring-orm:6.1.5")
+    implementation 'org.springframework.data:spring-data-jpa:3.4.4'
+    implementation("org.hibernate:hibernate-core:6.4.4.Final")
+    implementation("com.zaxxer:HikariCP:5.1.0")
+    implementation("org.postgresql:postgresql:42.7.1")
+    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+}
+
+test {
+    useJUnitPlatform()
+}
