@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group = 'ru.itis.vhsroni'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+war.archiveFileName = "${project.name}.war"
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+ext {
+    springVersion = '6.2.5'
+    servletVersion = '6.0.0'
+    lombokVersion = '1.18.38'
+    jacksonVersion = '2.18.3'
+}
+
+dependencies {
+    implementation "org.springframework:spring-core:${springVersion}"
+    implementation "org.springframework:spring-context:${springVersion}"
+    implementation "org.springframework:spring-context-support:${springVersion}"
+    implementation "org.springframework:spring-webmvc:${springVersion}"
+
+    compileOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
