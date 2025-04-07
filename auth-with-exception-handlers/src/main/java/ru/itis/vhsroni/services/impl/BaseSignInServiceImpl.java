@@ -6,10 +6,14 @@ import org.springframework.stereotype.Service;
 import ru.itis.vhsroni.api.dto.request.SignInRequest;
 import ru.itis.vhsroni.api.dto.response.TokenResponse;
 import ru.itis.vhsroni.entity.UserEntity;
+import ru.itis.vhsroni.exceptions.EmailNotFoundServiceException;
+import ru.itis.vhsroni.exceptions.IncorrectPasswordValidationServiceException;
+import ru.itis.vhsroni.exceptions.InternalServiceException;
 import ru.itis.vhsroni.repositories.UserRepository;
 import ru.itis.vhsroni.services.SignInService;
 import ru.itis.vhsroni.services.TokenService;
 import ru.itis.vhsroni.validators.EmailValidator;
+import ru.itis.vhsroni.validators.PasswordValidator;
 
 import java.util.Optional;
 
@@ -23,42 +27,34 @@ public class BaseSignInServiceImpl implements SignInService {
 
     private final EmailValidator emailValidator;
 
+    private final PasswordValidator passwordValidator;
+
     @Override
     public TokenResponse signInByToken(SignInRequest request) {
-        try {
+        String email = request.getEmail();
+        String rawPassword = request.getRawPassword();
 
-            String email = request.getEmail();
-            String rawPassword = request.getRawPassword();
+        emailValidator.checkValid(email);
+        passwordValidator.checkValid(rawPassword);
 
-            if (emailValidator.checkEmptyValue(email)) {
-                return new TokenResponse(3, "не сообщён логин", null);
-            }
-            if (rawPassword == null || rawPassword.isBlank() || rawPassword.isEmpty()) {
-                return new TokenResponse(4, "не сообщён пароль", null);
-            }
 
-            Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
 
-            if (userOptional.isEmpty()) {
-                return new TokenResponse(1, "сообщён неверный логин", null);
-            }
-
-            UserEntity user = userOptional.get();
-
-            String hashPassword = user.getHashPassword();
-
-            if (!BCrypt.checkpw(rawPassword, hashPassword)) {
-                return new TokenResponse(2, "сообщён неверный пароль", null);
-            }
-
-            String token = tokenService.generateToken();
-            user.setToken(token);
-            userRepository.save(user);
-
-            return new TokenResponse(0, "успешный вход", token);
-
-        } catch (Exception E) {
-            return new TokenResponse(99, "внутренние ошибки сервиса", null);
+        if (userOptional.isEmpty()) {
+            throw new EmailNotFoundServiceException();
         }
+
+        UserEntity user = userOptional.get();
+        String hashPassword = user.getHashPassword();
+
+        if (!BCrypt.checkpw(rawPassword, hashPassword)) {
+            throw new IncorrectPasswordValidationServiceException();
+        }
+
+        String token = tokenService.generateToken();
+        user.setToken(token);
+        userRepository.save(user);
+
+        return new TokenResponse(0, "успешный вход", token);
     }
 }

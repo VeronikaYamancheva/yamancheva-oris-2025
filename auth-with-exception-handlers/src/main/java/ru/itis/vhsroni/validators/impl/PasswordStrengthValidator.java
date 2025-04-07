@@ -1,33 +1,33 @@
 package ru.itis.vhsroni.validators.impl;
 
 import org.springframework.stereotype.Component;
+import ru.itis.vhsroni.exceptions.EmptyPasswordValidationServiceException;
+import ru.itis.vhsroni.exceptions.IncorrectPasswordValidationServiceException;
 import ru.itis.vhsroni.validators.PasswordValidator;
 
 @Component
 public class PasswordStrengthValidator implements PasswordValidator {
 
     @Override
-    public boolean checkValid(String password) {
-        if (password == null || password.isEmpty()) {
-            return false;
+    public void checkValid(String password) {
+        if (password == null || password.isEmpty() || password.isBlank()) {
+            throw new EmptyPasswordValidationServiceException();
         }
         if (password.length() < 8) {
-            return false;
+            throw new IncorrectPasswordValidationServiceException();
         }
         if (!password.matches(".*[A-Z].*")) {
-            return false;
+            throw new IncorrectPasswordValidationServiceException();
         }
         if (!password.matches(".*[a-z].*")) {
-            return false;
+            throw new IncorrectPasswordValidationServiceException();
         }
         if (!password.matches(".*[0-9].*")) {
-            return false;
+            throw new IncorrectPasswordValidationServiceException();
         }
-        return password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*");
-    }
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+            throw new IncorrectPasswordValidationServiceException();
+        }
 
-    @Override
-    public boolean checkEmptyValue(String password) {
-        return password == null || password.isBlank() || password.isEmpty();
     }
 }
