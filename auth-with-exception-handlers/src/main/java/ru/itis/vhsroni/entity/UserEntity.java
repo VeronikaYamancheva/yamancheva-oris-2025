@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -17,13 +16,16 @@ public class UserEntity {
 
     @Id
     @UuidGenerator
+    @Column(name = "uuid")
     private UUID uuid;
 
+    @Column(name = "email")
     private String email;
 
     @Column(name = "hash_password")
     private String hashPassword;
 
+    @Column(name = "token")
     private String token;
 
     @Column(name = "confirmation_code")

@@ -22,18 +22,12 @@ public class BaseLogoutServiceImpl implements LogoutService {
             String token = request.getToken();
 
             if (token == null || token.isEmpty() || token.isBlank()) {
-                return OperationResponse.builder()
-                        .operationStatus(2)
-                        .description("не предоставлен токен")
-                        .build();
+                return new OperationResponse(2, "не предоставлен токен");
             }
             Optional<UserEntity> userOptional = userRepository.findByToken(token);
 
             if (userOptional.isEmpty()) {
-                return OperationResponse.builder()
-                        .operationStatus(1)
-                        .description("предоставлен недействительный токен")
-                        .build();
+                return new OperationResponse(1, "предоставлен недействительный токен");
             }
 
             UserEntity user = userOptional.get();
@@ -41,15 +35,9 @@ public class BaseLogoutServiceImpl implements LogoutService {
             user.setToken(null);
             userRepository.save(user);
 
-            return OperationResponse.builder()
-                    .operationStatus(0)
-                    .description("успешный выход")
-                    .build();
+            return new OperationResponse(0, "успешный выход");
         } catch (Exception e) {
-            return OperationResponse.builder()
-                    .operationStatus(99)
-                    .description("внутренние ошибки сервиса")
-                    .build();
+            return new OperationResponse(99, "внутренние ошибки сервиса");
         }
     }
 }

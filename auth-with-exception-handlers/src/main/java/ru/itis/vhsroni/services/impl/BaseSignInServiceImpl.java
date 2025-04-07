@@ -8,6 +8,8 @@ import ru.itis.vhsroni.api.dto.response.TokenResponse;
 import ru.itis.vhsroni.entity.UserEntity;
 import ru.itis.vhsroni.repositories.UserRepository;
 import ru.itis.vhsroni.services.SignInService;
+import ru.itis.vhsroni.services.TokenService;
+import ru.itis.vhsroni.validators.EmailValidator;
 
 import java.util.Optional;
 
@@ -17,31 +19,28 @@ public class BaseSignInServiceImpl implements SignInService {
 
     private final UserRepository userRepository;
 
+    private final TokenService tokenService;
+
+    private final EmailValidator emailValidator;
+
     @Override
     public TokenResponse signInByToken(SignInRequest request) {
         try {
+
             String email = request.getEmail();
             String rawPassword = request.getRawPassword();
 
-            if (email == null || email.isEmpty() || email.isBlank()) {
-                return TokenResponse.builder()
-                        .operationStatus(3)
-                        .description("не сообщён логин")
-                        .build();
+            if (emailValidator.checkEmptyValue(email)) {
+                return new TokenResponse(3, "не сообщён логин", null);
             }
             if (rawPassword == null || rawPassword.isBlank() || rawPassword.isEmpty()) {
-                return TokenResponse.builder()
-                        .operationStatus(4)
-                        .description("не сообщён пароль")
-                        .build();
+                return new TokenResponse(4, "не сообщён пароль", null);
             }
+
             Optional<UserEntity> userOptional = userRepository.findByEmail(email);
 
             if (userOptional.isEmpty()) {
-                return TokenResponse.builder()
-                        .operationStatus(1)
-                        .description("сообщён неверный логин")
-                        .build();
+                return new TokenResponse(1, "сообщён неверный логин", null);
             }
 
             UserEntity user = userOptional.get();
@@ -49,27 +48,17 @@ public class BaseSignInServiceImpl implements SignInService {
             String hashPassword = user.getHashPassword();
 
             if (!BCrypt.checkpw(rawPassword, hashPassword)) {
-                return TokenResponse.builder()
-                        .operationStatus(2)
-                        .description("сообщён неверный пароль")
-                        .build();
+                return new TokenResponse(2, "сообщён неверный пароль", null);
             }
 
-            String token = "token-new-" + user.getUuid().toString();
+            String token = tokenService.generateToken();
             user.setToken(token);
             userRepository.save(user);
 
-            return TokenResponse.builder()
-                    .operationStatus(0)
-                    .description("успешный вход")
-                    .token(token)
-                    .build();
+            return new TokenResponse(0, "успешный вход", token);
 
         } catch (Exception E) {
-            return TokenResponse.builder()
-                    .operationStatus(99)
-                    .description("внутренние ошибки сервиса")
-                    .build();
+            return new TokenResponse(99, "внутренние ошибки сервиса", null);
         }
     }
 }

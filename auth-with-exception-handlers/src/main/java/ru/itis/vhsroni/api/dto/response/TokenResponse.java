@@ -17,4 +17,8 @@ public class TokenResponse extends OperationResponse {
 
     private String token;
 
+    public TokenResponse(int operationStatus, String description, String token) {
+        super(operationStatus, description);
+        this.token = token;
+    }
 }

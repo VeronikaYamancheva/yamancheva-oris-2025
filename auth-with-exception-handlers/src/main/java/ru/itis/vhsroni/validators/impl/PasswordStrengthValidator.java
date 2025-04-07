@@ -25,4 +25,9 @@ public class PasswordStrengthValidator implements PasswordValidator {
         }
         return password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*");
     }
+
+    @Override
+    public boolean checkEmptyValue(String password) {
+        return password == null || password.isBlank() || password.isEmpty();
+    }
 }

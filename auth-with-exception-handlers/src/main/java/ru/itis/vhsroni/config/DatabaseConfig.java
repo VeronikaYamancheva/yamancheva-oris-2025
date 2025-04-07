@@ -44,7 +44,7 @@ public class DatabaseConfig {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.ddl.auto", "update");
+        properties.setProperty("hibernate.ddl.auto", "validate");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.enable_lazy_load_no_trans", "true");

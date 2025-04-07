@@ -10,6 +10,7 @@ import ru.itis.vhsroni.entity.UserEntity;
 import ru.itis.vhsroni.mappers.UserMapper;
 import ru.itis.vhsroni.repositories.UserRepository;
 import ru.itis.vhsroni.services.SignUpService;
+import ru.itis.vhsroni.services.TokenService;
 import ru.itis.vhsroni.validators.EmailValidator;
 import ru.itis.vhsroni.validators.PasswordValidator;
 
@@ -28,47 +29,35 @@ public class BaseSignUpServiceImpl implements SignUpService {
 
     private final PasswordValidator passwordValidator;
 
+    private final TokenService tokenService;
+
     @Override
     public OperationResponse prepareSignUp(SignUpRequest request) {
         try {
             String email = request.getEmail();
             String rawPassword = request.getRawPassword();
 
-            if (email == null || email.isEmpty() || email.isBlank()) {
-                return OperationResponse.builder()
-                        .operationStatus(4)
-                        .description("не предоставлен email")
-                        .build();
-            } else if (rawPassword == null || rawPassword.isBlank() || rawPassword.isEmpty()) {
-                return OperationResponse.builder()
-                        .operationStatus(5)
-                        .description("не предоставлен пароль")
-                        .build();
-            } else if (!emailValidator.checkValid(email)) {
-                return OperationResponse.builder()
-                        .operationStatus(1)
-                        .description("некорректный email")
-                        .build();
-            } else if (!passwordValidator.checkValid(rawPassword)) {
-                return OperationResponse.builder()
-                        .operationStatus(3)
-                        .description("некорректный пароль")
-                        .build();
-            } else if (userRepository.existsByEmail(email)) {
-                return OperationResponse.builder()
-                        .operationStatus(2)
-                        .description("занятый email")
-                        .build();
+            if (emailValidator.checkEmptyValue(email)) {
+                return new OperationResponse(4, "не предоставлен email");
+            }
+            if (passwordValidator.checkEmptyValue(rawPassword)) {
+                return new OperationResponse(5, "не предоставлен пароль");
+            }
+            if (!emailValidator.checkValid(email)) {
+                return new OperationResponse(1, "некорректный email");
+            }
+            if (!passwordValidator.checkValid(rawPassword)) {
+                return new OperationResponse(3, "некорректный пароль");
+            }
+            if (userRepository.existsByEmail(email)) {
+                return new OperationResponse(2, "занятый email");
             }
 
             String confirmationCode = generateConfirmationCode();
             boolean emailSent = sendConfirmationCode(email, confirmationCode);
 
             if (!emailSent) {
-                return OperationResponse.builder()
-                        .operationStatus(99)
-                        .description("невозможность отправить email")
-                        .build();
+                return new OperationResponse(99, "невозможность отправить email");
             }
 
             UserEntity user = userMapper.toEntity(request);
@@ -76,80 +65,55 @@ public class BaseSignUpServiceImpl implements SignUpService {
 
             userRepository.save(user);
 
-            return OperationResponse.builder()
-                    .operationStatus(0)
-                    .description("данные приняты, проверочный код отправлен")
-                    .build();
-
+            return new OperationResponse(0, "данные приняты, проверочный код отправлен");
         } catch (Exception e) {
-            return OperationResponse.builder()
-                    .operationStatus(99)
-                    .description("внутренние ошибки сервиса")
-                    .build();
+            return new OperationResponse(99, "внутренние ошибки сервиса");
         }
     }
 
     @Override
     public TokenResponse confirmSignUp(SignUpConfirmationRequest request) {
         try {
+
             String email = request.getEmail();
             String confirmationCode = request.getConfirmCode();
 
-            if (email == null || email.isEmpty() || email.isBlank()) {
-                return TokenResponse.builder()
-                        .operationStatus(4)
-                        .description("не предоставлен email")
-                        .build();
-            } else if (confirmationCode == null || confirmationCode.isBlank() || confirmationCode.isEmpty()) {
-                return TokenResponse.builder()
-                        .operationStatus(6)
-                        .description("не предоставлен проверочный код")
-                        .build();
-            } else if (!emailValidator.checkValid(email)) {
-                return TokenResponse.builder()
-                        .operationStatus(1)
-                        .description("некорректный email")
-                        .build();
+            if (emailValidator.checkEmptyValue(email)) {
+                return new TokenResponse(4, "не предоставлен email", null);
+            }
+            if (confirmationCode == null || confirmationCode.isBlank() || confirmationCode.isEmpty()) {
+                return new TokenResponse(6, "не предоставлен проверочный код", null);
+            }
+            if (!emailValidator.checkValid(email)) {
+                return new TokenResponse(1, "некорректный email", null);
             }
 
             Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+
             if (userOptional.isEmpty()) {
-                return TokenResponse.builder()
-                        .operationStatus(3)
-                        .description("на предоставленный email код не запрашивался")
-                        .build();
+                return new TokenResponse(3, "на предоставленный email код не запрашивался",
+                        null);
             }
 
             UserEntity user = userOptional.get();
+
             if (user.isConfirmed()) {
-                return TokenResponse.builder()
-                        .operationStatus(3)
-                        .description("email уже подтверждён")
-                        .build();
+                return new TokenResponse(3, "email уже подтверждён", null);
             }
 
             if (!confirmationCode.equals(user.getConfirmationCode())) {
-                return TokenResponse.builder()
-                        .operationStatus(5)
-                        .description("некорректный проверочный код")
-                        .build();
+                return new TokenResponse(5, "некорректный проверочный код", null);
             }
+
             user.setConfirmed(true);
-            String token = "token-first-" + user.getUuid().toString();
+            String token = tokenService.generateToken();
             user.setToken(token);
             userRepository.save(user);
 
-            return TokenResponse.builder()
-                    .operationStatus(0)
-                    .description("пользователь зарегистрирован, предоставлен токен для входа")
-                    .token(token)
-                    .build();
+            return new TokenResponse(0, "пользователь зарегистрирован, предоставлен токен для входа", token);
 
         } catch (Exception e) {
-            return TokenResponse.builder()
-                    .operationStatus(99)
-                    .description("внутренние ошибки сервиса")
-                    .build();
+            return new TokenResponse(99, "внутренние ошибки сервиса", null);
         }
     }
 
@@ -158,6 +122,7 @@ public class BaseSignUpServiceImpl implements SignUpService {
     }
 
     private boolean sendConfirmationCode(String email, String code) {
+        //TODO: логика отправки сообщений
         return true;
     }
 }

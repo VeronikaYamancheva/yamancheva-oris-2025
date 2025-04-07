@@ -16,4 +16,9 @@ public class EmailFormatValidator implements EmailValidator {
         }
         return email.matches(EMAIL_PATTERN);
     }
+
+    @Override
+    public boolean checkEmptyValue(String email) {
+        return email == null || email.isEmpty() || email.isBlank();
+    }
 }
