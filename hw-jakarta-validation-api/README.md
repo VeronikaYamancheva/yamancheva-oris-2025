@@ -2,6 +2,10 @@
 
 ## Jakarta Validation API
 
+### Ссылка на видео:
+
+https://youtu.be/4dWwpGZuzNM
+
 ### Сделано:
 
 - WebAppInitializer, WebMvcConfig - конфигурационные классы

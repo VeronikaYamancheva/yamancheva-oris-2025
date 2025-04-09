@@ -32,7 +32,7 @@ class BudgetMultipleValidatorTest {
 
             @Override
             public String message() {
-                return "Бюджет должен быть кратен 100";
+                return "Кратность бюджета не та(";
             }
 
             @Override

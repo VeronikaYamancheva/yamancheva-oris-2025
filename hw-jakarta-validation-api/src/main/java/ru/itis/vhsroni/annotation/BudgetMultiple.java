@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 public @interface BudgetMultiple {
     int value() default 1000;
 
-    String message() default "Бюджет должен быть кратен {}";
+    String message() default "Кратность бюджета не та(";
 
     Class<?>[] groups() default {};
 
