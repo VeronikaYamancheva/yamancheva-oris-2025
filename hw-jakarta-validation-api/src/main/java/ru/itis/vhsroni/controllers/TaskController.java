@@ -20,12 +20,12 @@ public class TaskController {
         return "task";
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public String submitForm(@Valid @ModelAttribute("taskDto")TaskDto taskDto) {
         return "redirect:/task/result";
     }
 
-    @GetMapping(value = "result")
+    @GetMapping(value = "/result")
     public String showSuccessPage(Model model) {
         model.addAttribute("message", "Успех!!!");
         return "success";
