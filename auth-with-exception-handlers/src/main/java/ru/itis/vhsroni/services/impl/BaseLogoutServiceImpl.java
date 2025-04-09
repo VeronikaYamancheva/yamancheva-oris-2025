@@ -6,7 +6,6 @@ import ru.itis.vhsroni.api.dto.request.LogoutRequest;
 import ru.itis.vhsroni.api.dto.response.OperationResponse;
 import ru.itis.vhsroni.entity.UserEntity;
 import ru.itis.vhsroni.exceptions.EmptyTokenValidationServiceException;
-import ru.itis.vhsroni.exceptions.InternalServiceException;
 import ru.itis.vhsroni.exceptions.InvalidTokenServiceException;
 import ru.itis.vhsroni.repositories.UserRepository;
 import ru.itis.vhsroni.services.LogoutService;

@@ -96,7 +96,7 @@ public class BaseSignUpServiceImpl implements SignUpService {
         return new TokenResponse(0, "Пользователь зарегистрирован, предоставлен токен для входа", token);
     }
 
-    private String generateConfirmationCode() {
+    public String generateConfirmationCode() {
         return String.format("%06d", new Random().nextInt(999999));
     }
 
