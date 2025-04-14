@@ -1,0 +1,137 @@
+:root {
+    --primary: #F7978B;
+    --dark-accent: #D76B60;
+    --light-accent: #FFC1B5;
+    --background: #FFF5F2;
+    --text-color: #4A3F35;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+    margin: 0;
+}
+
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    width: 360px;
+}
+
+h2 {
+    text-align: center;
+    color: var(--dark-accent);
+    margin-bottom: 24px;
+}
+
+label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 600;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--light-accent);
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    background-color: #fff8f6;
+    transition: border 0.2s;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--dark-accent);
+    outline: none;
+}
+
+button {
+    margin-top: 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--dark-accent);
+}
+
+.error-container {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.error-container h2 {
+    color: var(--dark-accent);
+    margin-bottom: 20px;
+}
+
+.error-container ul {
+    text-align: left;
+    margin: 0 auto 20px;
+    padding-left: 20px;
+    color: var(--text-color);
+}
+
+.error-container li {
+    margin-bottom: 8px;
+}
+
+.back-link {
+    display: inline-block;
+    padding: 10px 16px;
+    background-color: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.success-container {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.success-container h2 {
+    color: var(--dark-accent);
+    font-size: 24px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.success-container .back-link {
+    display: inline-block;
+    padding: 10px 16px;
+    background-color: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.success-container .back-link:hover {
+    background-color: var(--dark-accent);
+}
+
+
