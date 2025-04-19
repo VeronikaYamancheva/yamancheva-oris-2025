@@ -1,0 +1,56 @@
+body {
+    display: flex;
+    align-items: center;
+    background-color: #c1c8e4;
+    font-family: Verdana, sans-serif;
+    min-width: 850px;
+    color: #5680e9;
+    height: 100vh;
+}
+.horizontal-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    margin: auto;
+}
+.vertical-container {
+    display: flex;
+    flex-direction: column;
+}
+img {
+    width: 400px;
+    height: 400px;
+    margin: 0 50px;
+}
+.error-code {
+    display: block;
+    text-align: center;
+    font-size: 110px;
+    font-weight: bold;
+    margin: 10px;
+}
+.error-message {
+    font-size: 35px;
+    display: block;
+    text-align: center;
+}
+.redirect-link {
+    display: block;
+    text-align: center;
+    font-size: 30px;
+    padding: 10px 0;
+}
+
+.redirect-link a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 5px;
+    color: #5680e9;
+}
+.redirect-link a:hover {
+    border-radius: 23px;
+    background-color: #5680e9;
+    color: #c1c8e4;
+}

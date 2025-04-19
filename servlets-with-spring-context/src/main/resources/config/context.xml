@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:properties/app.properties"/>
+
+    <bean id="dataSource" class="org.postgresql.ds.PGSimpleDataSource">
+        <property name="url" value="${DB_URL}"/>
+        <property name="user" value="${DB_USER}"/>
+        <property name="password" value="${DB_PASSWORD}"/>
+    </bean>
+
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="appointmentProcedureRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.AppointmentProcedureRowMapper"/>
+
+    <bean id="appointmentRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.AppointmentRowMapper"/>
+
+    <bean id="clientRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.ClientRowMapper"/>
+
+    <bean id="dentistRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.DentistRowMapper"/>
+
+    <bean id="procedureRowMapper"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.mappers.ProcedureRowMapper"/>
+
+    <bean id="appointmentRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.AppointmentRepositoryImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="appointmentRowMapper"/>
+    </bean>
+
+    <bean id="appointmentProcedureRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.AppointmentProcedureRepositoryImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="appointmentProcedureRowMapper"/>
+        <constructor-arg ref="procedureRowMapper"/>
+    </bean>
+
+    <bean id="clientRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.ClientRepositoryImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="clientRowMapper"/>
+    </bean>
+
+    <bean id="dentistRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.DentistRepositoryImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="dentistRowMapper"/>
+    </bean>
+
+    <bean id="procedureRepository"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.repository.impl.ProcedureRepositoryImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+        <constructor-arg ref="procedureRowMapper"/>
+    </bean>
+
+    <bean id="appointmentService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.AppointmentServiceImpl">
+        <constructor-arg ref="appointmentRepository"/>
+        <constructor-arg ref="dentistRepository"/>
+        <constructor-arg ref="procedureRepository"/>
+        <constructor-arg ref="clientRepository"/>
+        <constructor-arg ref="appointmentProcedureRepository"/>
+    </bean>
+
+    <bean id="clientService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.ClientServiceImpl">
+        <constructor-arg ref="clientRepository"/>
+    </bean>
+
+    <bean id="dentistService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.DentistServiceImpl">
+        <constructor-arg ref="dentistRepository"/>
+    </bean>
+
+    <bean id="procedureService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.ProcedureServiceImpl">
+        <constructor-arg ref="procedureRepository"/>
+    </bean>
+
+    <bean id="signInService"
+          class="ru.kpfu.itis.vhsroni.clinicsemestrovka.services.impl.SignInServiceImpl">
+        <constructor-arg ref="clientRepository"/>
+    </bean>
+
+</beans>
