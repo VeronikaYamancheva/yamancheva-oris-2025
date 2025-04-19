@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group = 'ru.itis.vhsroni'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+war.archiveFileName = "${project.name}.war"
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+ext {
+    springVersion = '6.2.5'
+    servletVersion = '6.0.0'
+    lombokVersion = '1.18.38'
+    jacksonVersion = '2.18.3'
+    springDataJpaVersion = '3.4.4'
+    postgresqlVersion = '42.7.4'
+    hibernateVersion = '6.6.4.Final'
+    hikariCpVersion = '6.2.1'
+    jbcryptVersion = '0.4'
+    jakartaValidationVersion = '3.1.1'
+    hibernateValidatorVersion = '8.0.2.Final'
+    lombokMapstructBindingVersion = '0.2.0'
+    junitJupiterVersion = '5.10.2'
+    mockitoVersion = '5.11.0'
+    assertjVersion = '3.25.3'
+}
+
+dependencies {
+    implementation "org.springframework:spring-core:${springVersion}"
+    implementation "org.springframework:spring-context:${springVersion}"
+    implementation "org.springframework:spring-context-support:${springVersion}"
+    implementation "org.springframework:spring-webmvc:${springVersion}"
+    implementation "org.springframework.data:spring-data-jpa:${springDataJpaVersion}"
+    implementation "org.postgresql:postgresql:${postgresqlVersion}"
+    implementation "org.hibernate.orm:hibernate-core:${hibernateVersion}"
+    implementation "com.zaxxer:HikariCP:${hikariCpVersion}"
+    implementation "org.mindrot:jbcrypt:${jbcryptVersion}"
+    implementation "jakarta.validation:jakarta.validation-api:${jakartaValidationVersion}"
+    implementation "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
+    compileOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
