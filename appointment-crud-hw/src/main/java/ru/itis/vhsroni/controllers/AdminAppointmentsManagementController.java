@@ -36,8 +36,8 @@ public class AdminAppointmentsManagementController {
 
     @GetMapping("/date_range")
     public List<AppointmentDetailedResponse> getAppointmentsByDateRange(
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate
     ) {
         return adminAppointmentManagementService.findAppointmentsDetailedInfoByDateRange(startDate, endDate);
     }

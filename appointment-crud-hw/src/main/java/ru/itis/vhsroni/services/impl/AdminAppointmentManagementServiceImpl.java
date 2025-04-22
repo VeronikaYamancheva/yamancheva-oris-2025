@@ -75,6 +75,10 @@ public class AdminAppointmentManagementServiceImpl implements AdminAppointmentMa
 
     @Override
     public List<AppointmentResponse> findAppointmentByClientEmail(String email) {
+        Optional<ClientEntity> clientOptional = clientRepository.findByUser_Email(email);
+        if (clientOptional.isEmpty()) {
+            throw new ClientNotFoundException();
+        }
         return appointmentRepository.findByClient_User_Email(email).stream()
                 .map(appointmentMapper::toResponse)
                 .toList();
