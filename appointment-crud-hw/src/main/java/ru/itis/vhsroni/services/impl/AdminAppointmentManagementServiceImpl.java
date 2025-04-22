@@ -25,7 +25,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class BaseAdminAppointmentManagementServiceImpl implements AdminAppointmentManagementService {
+public class AdminAppointmentManagementServiceImpl implements AdminAppointmentManagementService {
 
     private final AppointmentRepositoryCustom appointmentRepositoryCustom;
 

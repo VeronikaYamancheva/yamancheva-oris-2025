@@ -66,6 +66,4 @@ public class AdminAppointmentsManagementController {
         adminAppointmentManagementService.deleteAppointmentById(appointmentId);
         return "Appointment was deleted";
     }
-
-
 }
